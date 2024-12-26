@@ -177,11 +177,46 @@ cursor: pointer;
                     let date=new Date().toLocaleString(undefined,{day:"numeric",month:"short"})
                     speak(date)
                 }
+                else if(message.includes("ai assistant source code")){
+                    speak("opening Ai assistance source code..")
+                    window.open("https://github.com/sandeep826323/my-assistant.git","_blank")
+                }
+                
+                async function getWeather(city) {
+                const apiKey = "5b397835e78733e848ef93123610630d"; // Replace with your OpenWeatherMap API key
+                const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+    
+            if (data.cod === 200) {
+                const temperature = data.main.temp;
+                const weatherDescription = data.weather[0].description;
+                speak(`The current temperature in ${city} is ${temperature} degrees Celsius with ${weatherDescription}.`);
+            } else {
+                speak("I couldn't find the weather for that location. Please try again.");
+            }
+        } catch (error) {
+            speak("I encountered an error while fetching the weather. Please try again later.");
+        }
+    }
+    if (message.includes("weather")) {
+        let city = message.split("weather in")[1]?.trim(); // Extract the city name
+        if (city) {
+            speak(`Let me check the weather in ${city}.`);
+            getWeather(city);
+        } else {
+            speak("Please specify a city to check the weather.");
+        }
+    }
+    // ... (other commands remain unchanged)
                 else{
                     let finalText="this is what i found on internet regarding" + message.replace("sitara","") || message.replace("sitara","")
                     speak(finalText)
                     window.open(`https://www.google.com/search?q=${message.replace("shipra","")}`,"_blank")
                 }
+                
             }
         </script>
     </body>
